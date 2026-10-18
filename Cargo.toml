@@ -1,0 +1,56 @@
+[package]
+name = "coderender"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+description = "把代码渲染成一张漂亮的图片（主题包 / 窗口装饰 / 任意倍率矢量渲染）"
+license = "MIT"
+
+[[bin]]
+name = "coderender"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+# 文本整形 + 系统字体枚举（纯 Rust，无 fontconfig 依赖）
+cosmic-text = { version = "0.19", default-features = false, features = ["std", "swash", "shape-run-cache"] }
+# 仅需要 PNG 编码
+image = { version = "0.25", default-features = false, features = ["png"] }
+serde = { version = "1", features = ["derive"] }
+# 矢量绘制：圆角窗口、阴影、红绿灯、标题栏图标
+tiny-skia = "0.12"
+toml = "1"
+# 语法高亮（纯 Rust 正则后端，不依赖 oniguruma C 库）；
+# yaml-load 允许扩展包直接提供 .sublime-syntax 文本语法
+syntect = { version = "5.3", default-features = false, features = [
+    "parsing",
+    "default-syntaxes",
+    "regex-fancy",
+    "dump-load",
+    "yaml-load",
+] }
+# 打包分发格式（.crpack 就是 zip）
+zip = { version = "2", default-features = false, features = ["deflate"] }
+unicode-width = "0.2"
+
+[build-dependencies]
+# 仅供 build.rs 打包 MSI 时使用
+anyhow = "1"
+
+[features]
+# 生成 Windows 安装包（.msi）：cargo build --release --features msi
+# 需要 WiX 工具链（WiX 4 的 `wix` CLI，或 WiX 3 的 candle/light），
+# 详见 packaging/build-msi.ps1 与 README「打包 Windows 安装包」。
+msi = []
+
+[package.metadata.msi]
+# 升级 GUID：必须保持稳定，否则无法覆盖升级旧版本。
+upgrade-code = "3cdd2adc-5609-4e3d-b36d-763724e89023"
+manufacturer = "coderender"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

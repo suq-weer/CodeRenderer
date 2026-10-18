@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  coderender —— Windows 安装包模板（WiX 4+）
+
+  本文件由 build.rs 在开启 msi feature 时自动展开（替换模板占位符），
+  生成的最终文件在 target/release/msi/coderender.wxs。
+
+  安装布局：
+    %ProgramFiles%\coderender\            可执行文件 + 许可证/说明
+    %ProgramData%\coderender\packs\       主题包 / 代码高亮扩展包（机器级，管理员投放）
+  并把 %ProgramFiles%\coderender 追加到系统 PATH。
+
+  手动打包：先安装 WiX（dotnet tool install global wix），
+  再执行 cargo build release features msi。
+
+  说明：
+    * WiX 4+ 的 Environment 元素在核心命名空间里，不需要 util 扩展；
+      Action 只支持 create / set / remove，配合 Part="last" + Separator 实现 PATH 追加。
+    * XML 注释里不能出现连续的两个减号，写注释时请用单个减号。
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="coderender"
+           Language="1033"
+           Version="@VERSION@"
+           Manufacturer="@MANUFACTURER@"
+           UpgradeCode="@UPGRADE_CODE@"
+           Scope="perMachine">
+
+    <SummaryInformation Description="coderender @VERSION@ —— 把代码渲染成一张图片"
+                         Keywords="Installer" />
+
+    <MajorUpgrade DowngradeErrorMessage="已安装更新版本的 coderender，请先卸载旧版本。" />
+
+    <!-- 把载荷压进 .msi 本身（默认会生成外置 cab1.cab，分发不方便） -->
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <!-- 程序本体 -->
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLDIR" Name="coderender">
+@INSTALL_DIRS@
+      </Directory>
+    </StandardDirectory>
+
+    <!--
+      扩展包（插件）目录：%ProgramData%\coderender\packs\{themes,syntax}。
+      目录由 CmpPacks 组件创建；卸载时按「先深后浅」的顺序 RemoveFolder，
+      避免残留空的父目录。占位符必须放在注释外面。
+    -->
+    <StandardDirectory Id="CommonAppDataFolder">
+      <Directory Id="CODERENDERDATA" Name="coderender">
+        <Directory Id="PACKSROOT" Name="packs">
+          <Directory Id="Packs_themes" Name="themes" />
+          <Directory Id="Packs_syntax" Name="syntax" />
+@PACKS_DIRS@
+        </Directory>
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="Main"
+             Title="coderender"
+             Description="CLI 可执行文件、许可证与扩展包目录"
+             AllowAbsent="no"
+             ConfigurableDirectory="INSTALLDIR">
+
+      <!-- 引用上面 Directory 树里的所有组件 -->
+@FEATURE_COMPONENTS@
+      <!-- 把安装目录追加到系统 PATH（所有用户可用；卸载时自动移除）。
+           WiX 4+ 的 Environment 在核心命名空间，Action 只支持 create/set/remove，
+           这里用 Part="last" + Separator=";" 实现「追加到末尾」。 -->
+      <Component Id="CmpPathEnv" Directory="INSTALLDIR" Guid="@PATH_GUID@">
+        <Environment Id="EnvPath"
+                     Name="PATH"
+                     Value="[INSTALLDIR]"
+                     Action="set"
+                     Part="last"
+                     System="yes"
+                     Separator=";" />
+      </Component>
+    </Feature>
+  </Package>
+</Wix>

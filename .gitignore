@@ -1,0 +1,5 @@
+/target
+/out
+
+# WiX 本地扩展缓存（wix extension add 生成，本项目已不需要 util 扩展）
+/.wix/

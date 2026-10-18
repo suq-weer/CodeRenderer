@@ -1,0 +1,23 @@
+# 本包由 `coderender pack builtin-export` 生成：75 个语法。
+# coderender 内置代码高亮扩展包
+#
+# 这个包就是「程序内置的代码高亮规则」的扩展包形式：
+#   pack.toml                  本清单
+#   syntaxes/syntaxes.packdump syntect 二进制语法集（约 190 种语言）
+#
+# 它由 `coderender pack builtin-export` 生成，编译期内嵌进二进制；
+# 用户安装的同名语言扩展包会覆盖这里的语法（查找顺序：显式包 → 已安装包 → 内置）。
+#
+# 安装：coderender pack install assets/syntax/builtin
+# 修改：解包后替换 syntaxes/ 下的文件，再 `coderender pack build` 重新打包
+
+[pack]
+id = "builtin-syntaxes"
+kind = "syntax"
+name = "coderender 内置语法集"
+version = "1.0.0"
+description = "syntect 默认语法集：约 190 种语言的 TextMate 规则"
+license = "MIT"
+
+[[syntax]]
+path = "syntaxes/syntaxes.packdump"

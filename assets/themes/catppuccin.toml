@@ -1,0 +1,198 @@
+# ============================================================================
+# coderender 内置主题包：Catppuccin
+#
+# 一个主题包 = 若干「代码配色预设」([palettes.*]) + 若干「窗口装饰预设」([decorations.*])。
+# 可以用 `coderender themes --export my-pack.toml` 导出本文件，改完再用
+# `coderender render foo.rs --theme-pack my-pack.toml --theme mocha` 使用。
+#
+# 颜色格式：#rgb / #rrggbb / #rrggbbaa（可省略 #）。
+# 源码色值来自 https://catppuccin.com/palette/
+# ============================================================================
+
+[pack]
+id = "catppuccin"
+name = "Catppuccin"
+version = "1.0.0"
+license = "MIT"
+homepage = "https://catppuccin.com/palette/"
+description = "Catppuccin 四个风味（Latte / Frappé / Macchiato / Mocha）的代码配色与窗口装饰预设"
+
+# ----------------------------------------------------------------------------
+# 代码配色预设
+# ----------------------------------------------------------------------------
+
+[palettes.latte]
+name = "Catppuccin Latte"
+appearance = "light"
+background = "#eff1f5"   # Base
+titlebar = "#e6e9ef"     # Mantle，窗口标题栏
+border = "#bcc0cc"        # Surface1，窗口描边
+foreground = "#4c4f69"   # Text
+gutter = "#9ca0b0"        # Overlay0，行号
+
+[palettes.latte.syntax]
+keyword = "#8839ef"      # Mauve
+function = "#1e66f5"     # Blue
+type = "#df8e1d"         # Yellow
+builtin = "#179299"      # Teal
+string = "#40a02b"       # Green
+number = "#fe640b"       # Peach
+constant = "#fe640b"     # Peach
+comment = "#8c8fa1"      # Overlay1
+operator = "#04a5e5"     # Sky
+punctuation = "#7c7f93"  # Overlay2
+variable = "#4c4f69"     # Text
+parameter = "#e64553"    # Maroon
+property = "#4c4f69"     # Text
+attribute = "#df8e1d"    # Yellow
+tag = "#8839ef"          # Mauve
+escape = "#ea76cb"       # Pink
+invalid = "#d20f39"      # Red
+
+[palettes.frappe]
+name = "Catppuccin Frappé"
+appearance = "dark"
+background = "#303446"   # Base
+titlebar = "#292c3c"     # Mantle
+border = "#414559"       # Surface0
+foreground = "#c6d0f5"   # Text
+gutter = "#737994"       # Overlay0
+
+[palettes.frappe.syntax]
+keyword = "#ca9ee6"      # Mauve
+function = "#8caaee"     # Blue
+type = "#e5c890"         # Yellow
+builtin = "#81c8be"      # Teal
+string = "#a6d189"       # Green
+number = "#ef9f76"       # Peach
+constant = "#ef9f76"     # Peach
+comment = "#838ba7"      # Overlay1
+operator = "#99d1db"     # Sky
+punctuation = "#949cbb"  # Overlay2
+variable = "#c6d0f5"     # Text
+parameter = "#ea999c"    # Maroon
+property = "#c6d0f5"     # Text
+attribute = "#e5c890"    # Yellow
+tag = "#ca9ee6"          # Mauve
+escape = "#f4b8e4"       # Pink
+invalid = "#e78284"      # Red
+
+[palettes.macchiato]
+name = "Catppuccin Macchiato"
+appearance = "dark"
+background = "#24273a"   # Base
+titlebar = "#1e2030"     # Mantle
+border = "#363a4f"       # Surface0
+foreground = "#cad3f5"   # Text
+gutter = "#6e738d"       # Overlay0
+
+[palettes.macchiato.syntax]
+keyword = "#c6a0f6"      # Mauve
+function = "#8aadf4"     # Blue
+type = "#eed49f"         # Yellow
+builtin = "#8bd5ca"      # Teal
+string = "#a6da95"       # Green
+number = "#f5a97f"       # Peach
+constant = "#f5a97f"     # Peach
+comment = "#8087a2"      # Overlay1
+operator = "#91d7e3"     # Sky
+punctuation = "#939ab7"  # Overlay2
+variable = "#cad3f5"     # Text
+parameter = "#ee99a0"    # Maroon
+property = "#cad3f5"     # Text
+attribute = "#eed49f"    # Yellow
+tag = "#c6a0f6"          # Mauve
+escape = "#f5bde6"       # Pink
+invalid = "#ed8796"      # Red
+
+[palettes.mocha]
+name = "Catppuccin Mocha"
+appearance = "dark"
+background = "#1e1e2e"   # Base
+titlebar = "#181825"     # Mantle
+border = "#313244"       # Surface0
+foreground = "#cdd6f4"   # Text
+gutter = "#6c7086"       # Overlay0
+
+[palettes.mocha.syntax]
+keyword = "#cba6f7"      # Mauve
+function = "#89b4fa"     # Blue
+type = "#f9e2af"         # Yellow
+builtin = "#94e2d5"      # Teal
+string = "#a6e3a1"       # Green
+number = "#fab387"       # Peach
+constant = "#fab387"     # Peach
+comment = "#7f849c"      # Overlay1
+operator = "#89dceb"     # Sky
+punctuation = "#9399b2"  # Overlay2
+variable = "#cdd6f4"     # Text
+parameter = "#eba0ac"    # Maroon
+property = "#cdd6f4"     # Text
+attribute = "#f9e2af"    # Yellow
+tag = "#cba6f7"          # Mauve
+escape = "#f5c2e7"       # Pink
+invalid = "#f38ba8"      # Red
+
+# ----------------------------------------------------------------------------
+# 窗口装饰预设
+# ----------------------------------------------------------------------------
+
+[decorations.macos]
+name = "macOS"
+title_height = 36          # 标题栏高度（逻辑像素，0 表示无标题栏）
+corner_radius = 12         # 窗口圆角
+title_align = "center"     # 标题对齐：left / center
+titlebar_style = "solid"   # solid = 用 palette.titlebar；tint = 由背景色向文字色混合
+title_font_scale = 0.82
+padding = 28               # 代码区域内边距
+
+[decorations.macos.shadow]
+offset_y = 14
+blur = 30
+alpha = 0.42
+
+[decorations.macos.controls]
+style = "traffic_lights"   # Mac 红绿灯
+radius = 6.5
+spacing = 19               # 灯间距
+inset = 20                 # 距左边距
+close = "#ff5f57"
+minimize = "#febc2e"
+maximize = "#28c840"
+
+[decorations.windows]
+name = "Windows 11"
+title_height = 34
+corner_radius = 8
+title_align = "left"
+titlebar_style = "solid"
+title_font_scale = 0.8
+padding = 28
+
+[decorations.windows.shadow]
+offset_y = 10
+blur = 26
+alpha = 0.35
+
+[decorations.windows.controls]
+style = "windows"          # 最小化 / 最大化 / 关闭
+icon_size = 10
+button_width = 46          # 每个按钮的点击区宽度
+inset = 8
+
+[decorations.none]
+name = "无标题栏"
+title_height = 0
+corner_radius = 14
+title_align = "left"
+titlebar_style = "solid"
+title_font_scale = 0.8
+padding = 28
+
+[decorations.none.shadow]
+offset_y = 10
+blur = 26
+alpha = 0.35
+
+[decorations.none.controls]
+style = "none"
